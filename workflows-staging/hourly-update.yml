@@ -1,0 +1,52 @@
+# Hourly snapshot + site rebuild.
+# NOTE: staged at workflows-staging/ due to token scope limits.
+# Move this file to .github/workflows/hourly-update.yml to activate.
+name: hourly-update
+
+on:
+  schedule:
+    - cron: "17 * * * *" # hourly at :17 — 24 req/day, far under the 30 req/min limit
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: hourly-update
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install package
+        run: pip install .
+
+      - name: Take snapshot (3 polite API requests, spaced)
+        run: lustro-accountability --min-interval 10 -v snapshot
+
+      - name: Check classifier health flip (alerts via optional webhook)
+        env:
+          ACCOUNTABILITY_WEBHOOK_URL: ${{ secrets.ACCOUNTABILITY_WEBHOOK_URL }}
+        run: |
+          lustro-accountability check-health-flip || echo "::warning::classifier_loaded state flipped — see log"
+
+      - name: Rebuild static site
+        run: lustro-accountability build-site
+
+      - name: Commit snapshot + rebuilt site
+        run: |
+          git config user.name "lustro-accountability-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add snapshots/ site/
+          if git diff --cached --quiet; then
+            echo "no changes"
+          else
+            git commit -m "chore: hourly snapshot $(date -u +%Y-%m-%dT%H:%MZ)"
+            git push
+          fi
