@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LUSTRO Accountability — rejestr korekt i zdrowie API</title>
+<style>
+:root { color-scheme: light; }
+body { font-family: system-ui, sans-serif; margin: 0 auto; max-width: 860px; padding: 1rem;
+       line-height: 1.55; color: #1a1a1a; background: #fdfdfb; }
+h1 { font-size: 1.5rem; } h2 { font-size: 1.15rem; margin-top: 2rem; }
+table { border-collapse: collapse; width: 100%; font-size: 0.85rem; }
+th, td { border: 1px solid #ccc; padding: 0.35rem 0.5rem; text-align: left; }
+th { background: #f0f0ea; }
+.banner { padding: 0.6rem 0.9rem; border-radius: 6px; margin: 0.8rem 0; }
+.banner.warn { background: #fff3e0; border: 1px solid #ef6c00; }
+.banner.ok { background: #e8f5e9; border: 1px solid #2e7d32; }
+.banner.unk { background: #eeeeee; border: 1px solid #9e9e9e; }
+.framing { background: #eef3fb; border-left: 4px solid #1565c0; padding: 0.7rem 1rem; }
+.legend { font-size: 0.8rem; color: #444; }
+.sw { display: inline-block; width: 0.8em; height: 0.8em; border-radius: 2px; margin: 0 0.2em; }
+.sw.ok { background: #2e7d32; } .sw.bad { background: #c62828; }
+.sw.unk { background: #9e9e9e; } .sw.flip { background: #fff; border: 3px solid #ffca28; }
+.langswitch { float: right; }
+button { font: inherit; cursor: pointer; }
+footer { margin-top: 3rem; font-size: 0.8rem; color: #555; border-top: 1px solid #ddd;
+          padding-top: 0.8rem; }
+a { color: #0d47a1; }
+code { background: #f4f4f0; padding: 0 0.25em; border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="langswitch">
+  <button id="btn-pl" onclick="setLang('pl')">PL</button>
+  <button id="btn-en" onclick="setLang('en')">EN</button>
+</div>
+<h1><span lang="pl">LUSTRO Accountability — niezależny monitoring przejrzystości</span><span lang="en" hidden>LUSTRO Accountability — independent transparency monitor</span></h1>
+
+<div class="framing">
+<p><strong><span lang="pl">Wspierający, niezależny nadzór.</span><span lang="en" hidden>Supportive, independent oversight.</span></strong>
+<span lang="pl">Ta strona śledzi, jak projekt LUSTRO (projektlustro.eu) dotrzymuje własnych obietnic przejrzystości: rejestr korekt i zdrowie scoringu. Projekt zasługuje na uznanie za otwartą konstrukcję korekt — podpisane kryptograficznie rekordy korekt są publicznie dostępne w API, co czyni ten monitoring w ogóle możliwym.</span><span lang="en" hidden>This page tracks how the LUSTRO project (projektlustro.eu) keeps its own transparency promises: the corrections ledger and scoring health. The project deserves credit for its open-corrections design — cryptographically signed correction records are publicly served by the API, which is what makes this monitor possible at all.</span></p>
+<p><span lang="pl">LUSTRO śledzi narracje, nie osoby. Dane są z założenia zanonimizowane; ta strona nie próbuje i nie będzie próbować re-identyfikować autorów postów.</span><span lang="en" hidden>LUSTRO tracks narratives, not people. Data is de-identified by design; this page does not and will not attempt to re-identify post authors.</span></p>
+</div>
+
+<div class="banner warn"><span lang="pl">⚠ Klasyfikator NLP nie jest załadowany — wartości confidence w API LUSTRO pochodzą z scoringu awaryjnego opartego na słowach kluczowych (keyword-fallback scoring).</span><span lang="en" hidden>⚠ The NLP classifier is not loaded — confidence values in the LUSTRO API currently come from keyword-fallback scoring.</span></div>
+
+<h2><span lang="pl">Rejestr korekt</span><span lang="en" hidden>Corrections ledger</span></h2>
+<p><span lang="pl">Liczba korekt (najnowsza migawka)</span><span lang="en" hidden>Corrections (latest snapshot)</span>:
+   <strong>0</strong> ·
+   <span lang="pl">stany</span><span lang="en" hidden>states</span>: —</p>
+<p><em><span lang="pl">Rejestr korekt jest obecnie pusty.</span><span lang="en" hidden>The corrections ledger is currently empty.</span></em></p>
+
+<h2><span lang="pl">Opóźnienie korekt</span><span lang="en" hidden>Correction latency</span></h2>
+<p><span lang="pl">Czas od publikacji oryginalnego komunikatu do publikacji korekty. Założenie join: match_id korekty wskazuje id komunikatu; w przeciwnym razie łączymy po wspólnym UUID klastra (najwcześniejszy komunikat w klastrze).</span><span lang="en" hidden>Time from publication of the original advisory to publication of the correction. Join assumption: the correction match_id is the advisory id; otherwise we join on the shared cluster UUID (earliest advisory in the cluster).</span></p>
+<p><span lang="pl">Próbka</span><span lang="en" hidden>Sample</span>: 0 · min: — h ·
+   <span lang="pl">mediana</span><span lang="en" hidden>median</span>: — h ·
+   max: — h</p>
+<p><em><span lang="pl">Brak korekt w najnowszej migawce — rejestr jest pusty.</span><span lang="en" hidden>No corrections in the latest snapshot — the ledger is empty.</span></em></p>
+
+<h2><span lang="pl">Korekty w czasie</span><span lang="en" hidden>Corrections over time</span></h2>
+<svg viewBox="0 0 720 160" role="img" aria-label="Corrections over time" style="width:100%;max-width:720px;height:auto"><line x1="0" y1="140" x2="720" y2="140" stroke="#888"/><line x1="0" y1="0" x2="0" y2="140" stroke="#888"/><text x="716" y="14" text-anchor="end" font-size="11" fill="#555">max 1</text><polyline points="0.0,140.0" fill="none" stroke="#1565c0" stroke-width="2"/><circle cx="0.0" cy="140.0" r="3" fill="#1565c0"><title>2026-07-27T13:02:22.457600Z — 0 corrections</title></circle></svg>
+
+<h2><span lang="pl">Oś czasu zdrowia scoringu</span><span lang="en" hidden>Scoring-health timeline</span></h2>
+<svg viewBox="0 0 720 90" role="img" aria-label="Classifier health timeline" style="width:100%;max-width:720px;height:auto"><rect x="0.0" y="10" width="718.0" height="70" fill="#c62828" rx="2"><title>2026-07-27T13:02:22.457600Z — keyword-fallback scoring (classifier not loaded) (backend: calibrated_scorer)</title></rect></svg><p class="legend"><span class="sw ok"></span> classifier loaded <span class="sw bad"></span> keyword-fallback scoring <span class="sw unk"></span> unknown <span class="sw flip"></span> state flip</p>
+
+<footer>
+<p><span lang="pl">Wygenerowano</span><span lang="en" hidden>Generated</span>: 2026-07-27T13:02:22.457600Z ·
+   <span lang="pl">migawki</span><span lang="en" hidden>snapshots</span>: 1 ·
+   <a href="https://projektlustro.eu">projektlustro.eu</a> ·
+   <a href="https://projektlustro.eu/v1/corrections">/v1/corrections</a> ·
+   <a href="https://projektlustro.eu/api/health">/api/health</a></p>
+<p><span lang="pl">Dane wyłącznie z publicznego API LUSTRO (pola publiczne; bez buforowania pełnych treści). Migawki append-only przechowywane w repozytorium git.</span><span lang="en" hidden>Data exclusively from the public LUSTRO API (public fields only; no cached full text). Append-only snapshots stored in the git repository.</span></p>
+</footer>
+<script>
+function setLang(l) {
+  document.documentElement.lang = l;
+  document.querySelectorAll('[lang="pl"]').forEach(e => e.hidden = l !== 'pl');
+  document.querySelectorAll('[lang="en"]').forEach(e => e.hidden = l !== 'en');
+}
+</script>
+</body>
+</html>
